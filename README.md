@@ -12,6 +12,12 @@ A React + Vite web app for hostel administrators to manage rooms and automatical
 - **Dashboard stats** - view total rooms, total students, allocated rooms, pending rooms, available rooms, and occupancy percentage.
 - **Persistence** - rooms and occupancy are saved to browser `localStorage` and restored after refreshes.
 
+<p align="center">
+  <img src="./src/Asset/dashboard.png" alt="dashboard screenshot" width="800" /> <br /><em>Dashboard view — stats cards and the Allocate Room panel</em>
+  <img src="./src/Asset/rooms.png" alt = "Dashboard Screenshot" width= "800">
+  <br />
+  <em>Room view — Add room, search and filter them  </em>
+</p>
 ## How Allocation Works
 
 The `allocateRoom` function in [`src/allocate.js`](src/allocate.js) is pure. It filters out rooms without enough free space or required amenities, then selects the smallest remaining room.
