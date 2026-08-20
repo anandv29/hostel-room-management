@@ -1,16 +1,94 @@
-# React + Vite
+# Hostel Room Management
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React + Vite web app for hostel administrators to manage rooms and automatically allocate the smallest suitable room to incoming students based on capacity, AC, and attached-washroom requirements.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Add Room** - create rooms with a room number, capacity, AC flag, and attached-washroom flag.
+- **Room validation** - require a room number, prevent duplicate room numbers, and require a positive capacity.
+- **View Rooms** - browse responsive room cards showing capacity, occupancy, amenities, and status.
+- **Search and Filter** - filter rooms by room number, minimum capacity, AC, attached washroom, and status.
+- **Allocate Room** - assign students to the smallest room that satisfies the capacity and amenity requirements.
+- **Dashboard stats** - view total rooms, total students, allocated rooms, pending rooms, available rooms, and occupancy percentage.
+- **Persistence** - rooms and occupancy are saved to browser `localStorage` and restored after refreshes.
 
-## React Compiler
+## How Allocation Works
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The `allocateRoom` function in [`src/allocate.js`](src/allocate.js) is pure. It filters out rooms without enough free space or required amenities, then selects the smallest remaining room.
 
-## Expanding the ESLint configuration
+```js
+export function allocateRoom(rooms, students, needsAC, needsWashroom) {
+	const candidates = rooms.filter((room) => {
+		const freeSpace = room.capacity - room.occupied
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+		return (
+			freeSpace >= students &&
+			(!needsAC || room.hasAC) &&
+			(!needsWashroom || room.hasAttachedWashroom)
+		)
+	})
+
+	if (candidates.length === 0) return null
+
+	candidates.sort((a, b) => a.capacity - b.capacity)
+	return candidates[0]
+}
+```
+
+If no room qualifies, the dashboard displays `No room available`.
+
+## Data Model
+
+Each room is stored with the following fields:
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `roomNo` | `string` | Unique room identifier |
+| `capacity` | `number` | Maximum number of students the room can hold |
+| `hasAC` | `boolean` | Whether the room has AC |
+| `hasAttachedWashroom` | `boolean` | Whether the room has an attached washroom |
+| `occupied` | `number` | Number of students currently assigned; starts at `0` |
+
+Room status is derived from occupancy rather than stored:
+
+- `occupied === 0` - Available
+- `0 < occupied < capacity` - Partial
+- `occupied === capacity` - Full
+
+## Tech Stack
+
+- [React 19](https://react.dev/)
+- [Vite](https://vite.dev/)
+- Plain CSS
+- Browser `localStorage` for persistence
+
+## Project Structure
+
+```text
+src/
+├── App.jsx                 # Top-level room state and tab switching
+├── allocate.js             # Pure room-allocation algorithm
+├── storage.js              # localStorage load/save helpers
+├── index.css               # Application styling
+└── components/
+		├── Sidebar.jsx         # Dashboard and Rooms navigation
+		├── Dashboard.jsx       # Statistics and room allocation form
+		└── RoomsTab.jsx        # Add-room form, filters, and room cards
+```
+
+## Run Locally
+
+```bash
+npm install
+npm run dev
+```
+
+Then open the `localhost` URL printed by Vite.
+
+Other available scripts:
+
+```bash
+npm run build     # Create a production build
+npm run preview   # Preview the production build locally
+npm run lint      # Run ESLint
+```
