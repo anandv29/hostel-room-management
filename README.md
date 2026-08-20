@@ -18,10 +18,11 @@ A React + Vite web app for hostel administrators to manage rooms and automatical
   <br />
   <em>Room view — Add room, search and filter them  </em>
 	<br />
-	<video width="640" height="360" controls>
-  <source src="hostel-room-allocation-1bsbybwv_lMTOByRU.mp4" type="video/mp4">
-  
-</video>
+	
+
+
+
+
 
 </p>
 ## How Allocation Works
