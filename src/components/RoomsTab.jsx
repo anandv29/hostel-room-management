@@ -19,6 +19,12 @@ function RoomsTab({ rooms, setRooms }) {
   const [hasAttachedWashroom, setHasAttachedWashroom] = useState(false)
   const [message, setMessage] = useState(null) // { type: "error" | "success", text: "..." }
 
+  const [query, setQuery] = useState("")
+  const [minCapacity, setMinCapacity] = useState("")
+  const [ac, setAc] = useState("any")
+  const [washroom, setWashroom] = useState("any")
+  const [statusFilter, setStatusFilter] = useState("all")
+
   function handleAddRoom() {
     if (!roomNo.trim()) {
       setMessage({ type: "error", text: "Room number is required" })
@@ -52,6 +58,17 @@ function RoomsTab({ rooms, setRooms }) {
     setHasAttachedWashroom(false)
     setMessage({ type: "success", text: "Room added" })
   }
+
+  const visibleRooms = rooms.filter((r) => {
+    const status = roomStatus(r)
+    return (
+      r.roomNo.toLowerCase().includes(query.toLowerCase()) &&
+      (!minCapacity || r.capacity >= Number(minCapacity)) &&
+      (ac === "any" || r.hasAC === (ac === "yes")) &&
+      (washroom === "any" || r.hasAttachedWashroom === (washroom === "yes")) &&
+      (statusFilter === "all" || status === statusFilter)
+    )
+  })
 
   return (
     <div>
@@ -109,10 +126,65 @@ function RoomsTab({ rooms, setRooms }) {
         )}
       </div>
 
+      <div className="card">
+        <h2>Search &amp; Filter</h2>
+
+        <label>
+          Room Number
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search room number"
+          />
+        </label>
+
+        <label>
+          Minimum Capacity
+          <input
+            type="number"
+            value={minCapacity}
+            onChange={(e) => setMinCapacity(e.target.value)}
+            placeholder="e.g. 2"
+          />
+        </label>
+
+        <label>
+          AC Required
+          <select value={ac} onChange={(e) => setAc(e.target.value)}>
+            <option value="any">Any</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </label>
+
+        <label>
+          Washroom Required
+          <select value={washroom} onChange={(e) => setWashroom(e.target.value)}>
+            <option value="any">Any</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </label>
+
+        <label>
+          Status
+          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+            <option value="all">All</option>
+            <option value="available">Available</option>
+            <option value="partial">Partial</option>
+            <option value="full">Full</option>
+          </select>
+        </label>
+      </div>
+
       <div className="room-grid">
         {rooms.length === 0 && <p>No rooms yet — add one above.</p>}
+        {rooms.length > 0 && visibleRooms.length === 0 && (
+          <p>No rooms match your filters.</p>
+        )}
 
-        {rooms.map((room) => {
+        {visibleRooms.map((room) => {
           const status = roomStatus(room)
           return (
             <div key={room.roomNo} className={`card room-card status-${status}`}>

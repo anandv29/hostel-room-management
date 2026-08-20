@@ -71,7 +71,8 @@ label {
 }
 
 input[type="text"],
-input[type="number"] {
+input[type="number"],
+select {
   display: block;
   width: 100%;
   margin-top: 4px;
@@ -79,6 +80,8 @@ input[type="number"] {
   border: 1px solid #d0d0d0;
   border-radius: 8px;
   font-size: 14px;
+  font-family: inherit;
+  background: #ffffff;
 }
 
 input[type="checkbox"] {
