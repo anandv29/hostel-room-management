@@ -62,3 +62,109 @@ nav {
   background: #000000;
   color: #ffffff;
 }
+
+label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+input[type="text"],
+input[type="number"] {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  padding: 8px 10px;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+input[type="checkbox"] {
+  margin-right: 6px;
+}
+
+button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #1d4ed8;
+}
+
+.msg-error {
+  color: #b91c1c;
+  font-size: 14px;
+  margin-top: 12px;
+}
+
+.msg-success {
+  color: #15803d;
+  font-size: 14px;
+  margin-top: 12px;
+}
+
+.room-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.room-card {
+  border-left: 4px solid #d0d0d0;
+}
+
+.room-card p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #444;
+}
+
+.room-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.status-available {
+  border-left-color: #16a34a;
+}
+
+.status-partial {
+  border-left-color: #ea580c;
+}
+
+.status-full {
+  border-left-color: #dc2626;
+}
+
+.badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.badge-available {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.badge-partial {
+  background: #ffedd5;
+  color: #c2410c;
+}
+
+.badge-full {
+  background: #fee2e2;
+  color: #b91c1c;
+}
