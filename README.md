@@ -24,7 +24,12 @@ A React + Vite web app for hostel administrators to manage rooms and automatical
 
 
 
+	<video width="640" height="360" controls poster="./src/Asset/dashboard.png">
+		<source src="./src/Asset/hostel-room-allocation-1bsbybwv_lMTOByRU.mp4" type="video/mp4">
+		<a href="./src/Asset/hostel-room-allocation-1bsbybwv_lMTOByRU.mp4">Watch the demo video</a>
+	</video>
 </p>
+
 ## How Allocation Works
 
 The `allocateRoom` function in [`src/allocate.js`](src/allocate.js) is pure. It filters out rooms without enough free space or required amenities, then selects the smallest remaining room.
